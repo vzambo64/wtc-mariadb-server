@@ -1384,7 +1384,8 @@ static void log_checkpoint_margin()
 
   log_mutex_exit();
 
-  buf_flush_wait_flushed(async_flush_lsn, sync_flush_lsn);
+  buf_flush_wait_flushed(async_flush_lsn,
+                         std::max(sync_flush_lsn, async_checkpoint_lsn));
 
   if (lsn > async_checkpoint_lsn)
     log_checkpoint();
